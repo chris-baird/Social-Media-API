@@ -3,6 +3,7 @@ const { User } = require("../models")
 class UserService {
   constructor(models) {
     this.models = models
+    this.getUsers = this.getUsers.bind(this)
   }
 
   getUsers() {
