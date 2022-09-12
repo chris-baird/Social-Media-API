@@ -5,6 +5,7 @@ class UserService {
     this.models = models
     this.getUsers = this.getUsers.bind(this)
     this.getSingleUser = this.getSingleUser.bind(this)
+    this.createUser = this.createUser.bind(this)
   }
 
   getUsers() {
@@ -17,6 +18,10 @@ class UserService {
       .select('-__v')
       .populate('friends')
       .populate('thoughts')
+  }
+
+  createUser(user) {
+    return this.models.create(user)
   }
 }
 
