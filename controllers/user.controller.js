@@ -5,6 +5,7 @@ class UserController {
     this.service = service
     this.getUsers = this.getUsers.bind(this)
     this.getSingleUser = this.getSingleUser.bind(this)
+    this.createUser = this.createUser.bind(this)
   }
 
   getUsers(req, res) {
@@ -22,6 +23,16 @@ class UserController {
       if (!dbUserData) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
+      res.json(dbUserData);
+    })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  }
+
+  createUser(req, res) {
+    this.service.createUser(req.body).then((dbUserData) => {
       res.json(dbUserData);
     })
       .catch((err) => {
