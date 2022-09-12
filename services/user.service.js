@@ -7,6 +7,7 @@ class UserService {
     this.getSingleUser = this.getSingleUser.bind(this)
     this.createUser = this.createUser.bind(this)
     this.updateUser = this.updateUser.bind(this)
+    this.deleteUser = this.deleteUser.bind(this)
   }
 
   getUsers() {
@@ -37,6 +38,11 @@ class UserService {
       }
     )
   }
+
+  deleteUser(id) {
+    return this.models.User.findOneAndDelete({ _id: id })
+  }
+
 }
 
 module.exports = new UserService({ User })
