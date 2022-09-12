@@ -21,7 +21,7 @@ class UserService {
   }
 
   createUser(user) {
-    return this.models.create(user)
+    return this.models.User.create(user)
   }
 }
 
