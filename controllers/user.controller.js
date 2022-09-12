@@ -6,6 +6,7 @@ class UserController {
     this.getUsers = this.getUsers.bind(this)
     this.getSingleUser = this.getSingleUser.bind(this)
     this.createUser = this.createUser.bind(this)
+    this.updateUser = this.updateUser.bind(this)
   }
 
   getUsers(req, res) {
@@ -33,6 +34,19 @@ class UserController {
 
   createUser(req, res) {
     this.service.createUser(req.body).then((dbUserData) => {
+      res.json(dbUserData);
+    })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  }
+
+  updateUser(req, res) {
+    return this.service.updateUser(req.params.userId, req.body).then((dbUserData) => {
+      if (!dbUserData) {
+        return res.status(404).json({ message: 'No user with this id!' });
+      }
       res.json(dbUserData);
     })
       .catch((err) => {
