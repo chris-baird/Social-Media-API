@@ -6,6 +6,7 @@ class UserService {
     this.getUsers = this.getUsers.bind(this)
     this.getSingleUser = this.getSingleUser.bind(this)
     this.createUser = this.createUser.bind(this)
+    this.updateUser = this.updateUser.bind(this)
   }
 
   getUsers() {
@@ -22,6 +23,19 @@ class UserService {
 
   createUser(user) {
     return this.models.User.create(user)
+  }
+
+  updateUser(id, user) {
+    return this.models.User.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: user,
+      },
+      {
+        runValidators: true,
+        new: true,
+      }
+    )
   }
 }
 
