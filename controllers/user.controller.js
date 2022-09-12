@@ -1,5 +1,5 @@
-const { deleteUser } = require("../services/user.service")
 const UserService = require("../services/user.service")
+const ThoughtService = require("../services/thought.service")
 
 class UserController {
   constructor(services) {
@@ -62,10 +62,12 @@ class UserController {
       if (!dbUserData) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
-    })
-      .then(() => {
-        res.json({ message: 'User and associated thoughts deleted!' });
+
+      return this.services.ThoughtService.removeReaction(dbUserData).then(() => {
+        return res.json({ message: 'User and associated thoughts deleted!' });
       })
+
+    })
       .catch((err) => {
         console.log(err);
         res.status(500).json(err);
@@ -73,4 +75,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController({ UserService })
+module.exports = new UserController({ UserService, ThoughtService })
