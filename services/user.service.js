@@ -41,7 +41,6 @@ class UserService {
 
   deleteUser(id) {
     return this.models.User.findOneAndDelete({ _id: id })
-    // return Thought.deleteMany({ _id: { $in: dbUserData.thoughts } });
   }
 
 }
