@@ -11,67 +11,65 @@ class UserController {
     this.deleteUser = this.deleteUser.bind(this)
   }
 
-  getUsers(req, res) {
-    this.services.UserService.getUsers().then((dbUserData) => {
+  async getUsers(req, res) {
+    try {
+      const dbUserData = await this.services.UserService.getUsers()
+
       res.json(dbUserData);
-    })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 
-  getSingleUser(req, res) {
-    this.services.UserService.getSingleUser(req.params.userId).then((dbUserData) => {
-      if (!dbUserData) {
-        return res.status(404).json({ message: 'No user with this id!' });
-      }
-      res.json(dbUserData);
-    })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
-  }
+  async getSingleUser(req, res) {
+    try {
+      const dbUserData = await this.services.UserService.getSingleUser(req.params.userId)
 
-  createUser(req, res) {
-    this.services.UserService.createUser(req.body).then((dbUserData) => {
-      res.json(dbUserData);
-    })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
-  }
-
-  updateUser(req, res) {
-    return this.services.UserService.updateUser(req.params.userId, req.body).then((dbUserData) => {
-      if (!dbUserData) {
-        return res.status(404).json({ message: 'No user with this id!' });
-      }
-      res.json(dbUserData);
-    })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
-  }
-
-  deleteUser(req, res) {
-    this.services.UserService.deleteUser(req.params.userId).then((dbUserData) => {
       if (!dbUserData) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
 
-      return this.services.ThoughtService.removeReaction(dbUserData).then(() => {
-        return res.json({ message: 'User and associated thoughts deleted!' });
-      })
+      res.json(dbUserData);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 
-    })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
+  async createUser(req, res) {
+    try {
+      const dbUserData = await this.services.UserService.createUser(req.body)
+
+      res.json(dbUserData);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  async updateUser(req, res) {
+    try {
+      const dbUserData = await this.services.UserService.updateUser(req.params.userId, req.body)
+
+      if (!dbUserData) {
+        return res.status(404).json({ message: 'No user with this id!' });
+      }
+
+      res.json(dbUserData);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  async deleteUser(req, res) {
+    try {
+      const deletedUser = await this.services.UserService.deleteUser(req.params.userId)
+      if (!deletedUser) {
+        return res.status(404).json({ message: 'No user with this id!' });
+      }
+      await this.services.ThoughtService.removeReaction(deletedUser)
+      return res.json({ message: 'User and associated thoughts deleted!' });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
 }
 
