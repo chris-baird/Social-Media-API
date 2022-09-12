@@ -2,8 +2,8 @@ const { deleteUser } = require("../services/user.service")
 const UserService = require("../services/user.service")
 
 class UserController {
-  constructor(service) {
-    this.service = service
+  constructor(services) {
+    this.services = services
     this.getUsers = this.getUsers.bind(this)
     this.getSingleUser = this.getSingleUser.bind(this)
     this.createUser = this.createUser.bind(this)
@@ -12,7 +12,7 @@ class UserController {
   }
 
   getUsers(req, res) {
-    this.service.getUsers().then((dbUserData) => {
+    this.services.UserService.getUsers().then((dbUserData) => {
       res.json(dbUserData);
     })
       .catch((err) => {
@@ -22,7 +22,7 @@ class UserController {
   }
 
   getSingleUser(req, res) {
-    this.service.getSingleUser(req.params.userId).then((dbUserData) => {
+    this.services.UserService.getSingleUser(req.params.userId).then((dbUserData) => {
       if (!dbUserData) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
@@ -35,7 +35,7 @@ class UserController {
   }
 
   createUser(req, res) {
-    this.service.createUser(req.body).then((dbUserData) => {
+    this.services.UserService.createUser(req.body).then((dbUserData) => {
       res.json(dbUserData);
     })
       .catch((err) => {
@@ -45,7 +45,7 @@ class UserController {
   }
 
   updateUser(req, res) {
-    return this.service.updateUser(req.params.userId, req.body).then((dbUserData) => {
+    return this.services.UserService.updateUser(req.params.userId, req.body).then((dbUserData) => {
       if (!dbUserData) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
@@ -58,12 +58,10 @@ class UserController {
   }
 
   deleteUser(req, res) {
-    this.service.deleteUser(req.params.userId).then((dbUserData) => {
+    this.services.UserService.deleteUser(req.params.userId).then((dbUserData) => {
       if (!dbUserData) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
-
-      // return Thought.deleteMany({ _id: { $in: dbUserData.thoughts } });
     })
       .then(() => {
         res.json({ message: 'User and associated thoughts deleted!' });
@@ -75,4 +73,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController(UserService)
+module.exports = new UserController({ UserService })
