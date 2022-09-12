@@ -4,7 +4,7 @@ class UserService {
   constructor(models) {
     this.models = models
     this.getUsers = this.getUsers.bind(this)
-    this.gitSingleUser = this.gitSingleUser.bind(this)
+    this.getSingleUser = this.getSingleUser.bind(this)
   }
 
   getUsers() {
@@ -12,7 +12,7 @@ class UserService {
       .select('-__v')
   }
 
-  gitSingleUser(id) {
+  getSingleUser(id) {
     return this.models.User.findOne({ _id: id })
       .select('-__v')
       .populate('friends')

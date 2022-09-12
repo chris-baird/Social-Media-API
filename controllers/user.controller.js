@@ -18,7 +18,7 @@ class UserController {
   }
 
   getSingleUser(req, res) {
-    this.service.getSingleUser().then((dbUserData) => {
+    this.service.getSingleUser(req.params.userId).then((dbUserData) => {
       if (!dbUserData) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
