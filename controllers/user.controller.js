@@ -71,8 +71,11 @@ class UserController {
 
       await this.services.ThoughtService.removeReaction(deletedUser)
 
+      await this.services.UserService.deleteUserFromFriends(req.params.userId)
+
       return res.json({ message: 'User and associated thoughts deleted!' });
     } catch (error) {
+      console.log(error)
       res.status(500).json(error);
     }
   }
