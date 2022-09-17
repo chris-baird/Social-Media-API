@@ -10,6 +10,7 @@ class UserService {
     this.deleteUser = this.deleteUser.bind(this)
     this.addFriend = this.addFriend.bind(this)
     this.removeFriend = this.removeFriend.bind(this)
+    this.deleteUserFromFriends = this.deleteUserFromFriends.bind(this)
   }
 
   getUsers() {
@@ -43,6 +44,10 @@ class UserService {
 
   deleteUser(id) {
     return this.models.User.findOneAndDelete({ _id: id })
+  }
+
+  deleteUserFromFriends(userId) {
+    return this.models.User.updateMany({}, { $pull: { friends: { $in: [userId] } } })
   }
 
   addFriend(userId, friendId) {
