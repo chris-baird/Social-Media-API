@@ -9,6 +9,7 @@ class UserController {
     this.createUser = this.createUser.bind(this)
     this.updateUser = this.updateUser.bind(this)
     this.deleteUser = this.deleteUser.bind(this)
+    this.addFriend = this.addFriend.bind(this)
   }
 
   async getUsers(req, res) {
@@ -67,6 +68,20 @@ class UserController {
       }
       await this.services.ThoughtService.removeReaction(deletedUser)
       return res.json({ message: 'User and associated thoughts deleted!' });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+
+  async addFriend(req, res) {
+    try {
+      const dbUserData = await this.services.UserService.addFriend(req.params.userId, req.params.friendId)
+
+      if (!dbUserData) {
+        return res.status(404).json({ message: 'No user with this id!' });
+      }
+
+      res.json(dbUserData);
     } catch (error) {
       res.status(500).json(error);
     }
