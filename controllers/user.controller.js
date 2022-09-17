@@ -63,10 +63,13 @@ class UserController {
   async deleteUser(req, res) {
     try {
       const deletedUser = await this.services.UserService.deleteUser(req.params.userId)
+
       if (!deletedUser) {
         return res.status(404).json({ message: 'No user with this id!' });
       }
+
       await this.services.ThoughtService.removeReaction(deletedUser)
+
       return res.json({ message: 'User and associated thoughts deleted!' });
     } catch (error) {
       res.status(500).json(error);
