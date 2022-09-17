@@ -9,6 +9,7 @@ class UserService {
     this.updateUser = this.updateUser.bind(this)
     this.deleteUser = this.deleteUser.bind(this)
     this.addFriend = this.addFriend.bind(this)
+    this.removeFriend = this.removeFriend.bind(this)
   }
 
   getUsers() {
@@ -46,6 +47,10 @@ class UserService {
 
   addFriend(userId, friendId) {
     return this.models.User.findOneAndUpdate({ _id: userId }, { $addToSet: { friends: friendId } }, { new: true })
+  }
+
+  removeFriend(userId, friendId) {
+    return this.models.User.findOneAndUpdate({ _id: userId }, { $pull: { friends: friendId } }, { new: true })
   }
 
 }
