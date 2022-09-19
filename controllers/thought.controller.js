@@ -6,6 +6,16 @@ class ThoughtController {
   constructor(services) {
     this.services = services
   }
+
+  async getThoughts(req, res) {
+    try {
+      const dbThoughtData = await this.services.ThoughtService.getThoughts()
+
+      res.json(dbThoughtData)
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
 }
 
 
