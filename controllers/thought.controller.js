@@ -5,6 +5,7 @@ const ThoughtService = require("../services/thought.service")
 class ThoughtController {
   constructor(services) {
     this.services = services
+    this.getThoughts = this.getThoughts.bind(this)
   }
 
   async getThoughts(req, res) {
